@@ -2,21 +2,45 @@ import tkinter as tk
 from tkinter import messagebox
 
 window = tk.Tk()
-window.title("Covid-19 Diagnose Expert System")
-window.geometry("300x200+500+300")
+window.title("COVID-19 Diagnosis Expert System")
+window.geometry("350x260+500+300")
 
-def on_button_click():
-    #messagebox.showinfo("Message",entry.get())
-    messagebox.showinfo("Message","Send her to karaoke!")
-    
-label = tk.Label(window, text="Please enter your roommate's mood")
+def diagnose():
+    fever = var_fever.get()
+    cough = var_cough.get()
+    taste = var_taste.get()
+    breath = var_breath.get()
+
+    # Simple rule-based expert system
+    if fever and cough and taste:
+        result = "High chance of COVID-19.\nPlease get tested immediately."
+    elif (fever and cough) or (cough and taste):
+        result = "Possible COVID-19 infection.\nPlease monitor your symptoms."
+    elif breath:
+        result = "Warning: Difficulty breathing!\nSeek medical help IMMEDIATELY."
+    else:
+        result = "Low COVID-19 risk.\nContinue to monitor your health."
+
+    messagebox.showinfo("Diagnosis Result", result)
+
+# Labels
+label = tk.Label(window, text="Select your symptoms:")
 label.pack(pady=10)
 
-entry = tk.Entry(window, width=30)
-entry.insert(0,"Roommate is in bad mood")
-entry.pack(pady=12)
+# Checkbox variables
+var_fever = tk.BooleanVar()
+var_cough = tk.BooleanVar()
+var_taste = tk.BooleanVar()
+var_breath = tk.BooleanVar()
 
-button = tk.Button(window, text="Ok", command=on_button_click)
-button.pack(pady=12)
+# Checkboxes
+tk.Checkbutton(window, text="Fever", variable=var_fever).pack(anchor='w')
+tk.Checkbutton(window, text="Cough", variable=var_cough).pack(anchor='w')
+tk.Checkbutton(window, text="Loss of taste/smell", variable=var_taste).pack(anchor='w')
+tk.Checkbutton(window, text="Difficulty breathing", variable=var_breath).pack(anchor='w')
+
+# Button
+button = tk.Button(window, text="Diagnose", command=diagnose)
+button.pack(pady=15)
 
 window.mainloop()
